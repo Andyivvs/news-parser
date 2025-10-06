@@ -14,3 +14,45 @@
 pip freeze > requirements.txt
 Установить зависимости:
 pip install -r requirements.txt
+
+Шаг: Напишем парсер для Lenta.ru
+Открой файл parser.py в VS Code.
+Замени всё содержимое на:
+import requests
+from bs4 import BeautifulSoup
+
+# URL главной страницы Lenta.ru
+URL = "https://lenta.ru/"
+
+# Заголовок, чтобы сайт не считал нас ботом
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+}
+
+def parse_lenta():
+    try:
+        response = requests.get(URL, headers=HEADERS)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        # Ищем первые 5 новостей
+        news_items = []
+        for item in soup.select('div.b-card')[:5]:
+            title_tag = item.select_one('h3')
+            link_tag = item.select_one('a')
+            
+            if title_tag and link_tag:
+                title = title_tag.get_text(strip=True)
+                link = "https://lenta.ru" + link_tag['href']
+                news_items.append(f"{title}\n{link}\n")
+        
+        return "\n".join(news_items)
+    
+    except Exception as e:
+        return f"Ошибка: {e}"
+
+if __name__ == "__main__":
+    print("Парсинг Lenta.ru...\n")
+    result = parse_lenta()
+    print(result)

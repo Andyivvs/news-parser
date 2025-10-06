@@ -1,0 +1,5 @@
+config.json
+news.db
+venv/
+__pycache__/
+*.pyc
