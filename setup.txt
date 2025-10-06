@@ -1,0 +1,16 @@
+# Настройка проекта
+
+1. Создать виртуальное окружение:
+   python -m venv venv
+
+2. Активировать (Windows):
+   venv\Scripts\activate
+
+3. Установить зависимости:
+   pip install requests beautifulsoup4
+
+4. Запускать скрипты только в активированном окружении.
+5. Сохрани список зависимостей Выполни команду:
+pip freeze > requirements.txt
+Установить зависимости:
+pip install -r requirements.txt
